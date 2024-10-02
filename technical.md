@@ -290,9 +290,9 @@ fun main() = runBlocking {
 cancel이 호출되고 children coroutine들이 취소될 때까지 프로그램이 기다리지 않기 때문이다.
 자식 코루틴이 취소되고 invokeOnCompletion이 호출되기 이전에 프로그램이 종료된 것이다.
 
-이를 해결하는 방법은 join을 통해 CoroutineScope의 Job이 완료되기까지 대기시키는 것이다.
-- **`CoroutineScope.coroutineContext[Job]`를 통해 Job에 접근 가능하다.**
-  (CoroutineContext의 element들은 Map으로 관리되는데, Job이라는 키를 통해 Job 객체에 접근하기 위한 방식이다.)
+이를 해결하는 방법은 join을 호출하여 CoroutineScope의 Job이 완료되기까지 대기시키는 것이다.
+- **`CoroutineScope.coroutineContext[Job]`으로 Job에 접근 가능하다.**
+  (CoroutineContext의 element들은 Map으로 관리되는데, Job이라는 키를 활용해 Job 객체에 접근하기 위한 방식이다.)
 
 ```kotlin
 fun main() = runBlocking {
