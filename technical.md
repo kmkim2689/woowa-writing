@@ -433,3 +433,31 @@ fun main() = runBlocking<Unit> {
 
 여러 UI 혹은 비즈니스 로직이 동시에 동작하는 동안, 한 동작에 예외가 발생한다고 해서 다른 동작들이 취소된다면, 사용자 경험에 부정적인 영향을 줄 수 있다.
 따라서, 안드로이드 프레임워크 상에서 제공하는 `viewModelScope` 및 `lifecycleScope`에서는 `SupervisorJob`을 기반으로 `CoroutineScope`가 구현되어 있다.
+
+이것을 활용하면 각 작업들을 독립적으로 관리할 수 있으며, 한 코루틴의 예외가 다른 코루틴으로 전파되지 않도록 할 수 있다.
+특히 특정 기능에서 오류가 발생해도 전체 앱이 중단되지 않도록 하며 다른 기능들은 정상적으로 동작시킬 수 있다.
+
+```
+class MyViewModel : ViewModel() {
+    fun loadData() {
+        viewModelScope.launch {
+            try {
+                // 데이터 로딩 로직
+            } catch (e: Exception) {
+                // 이 예외는 다른 코루틴에 영향을 주지 않음
+                Log.e("MyViewModel", "Data loading failed", e)
+            }
+        }
+    }
+
+    fun updateUI() {
+        viewModelScope.launch {
+            // UI 업데이트 로직
+            // loadData()에서 예외가 발생해도 이 코루틴은 계속 실행됨
+        }
+    }
+}
+```
+
+이러한 방식으로 `SupervisorJob`을 활용하면, 안드로이드 앱의 각 기능을 독립적으로 동작시킴으로써 전체적인 안정성과 사용자 경험을 향상시킬 수 있다. 
+특히 복잡한 화면이나 여러 비동기 작업이 동시에 실행되는 상황에서 이것을 유용하게 사용할 수 있다.
