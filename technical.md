@@ -37,9 +37,9 @@ GUI 프로그램에서 스레드를 블록하는 작업은 비동기적으로 �
 
 > 모든 코루틴은 특정 `CoroutineScope`에 종속되어, 제약된 수명 주기를 갖는다.
 
-모든 `CoroutineScope`는 생명주기를 가지기 때문에 수명 역시 제한적이다.
+모든 `CoroutineScope`는 제한된 수명을 가진다.
 따라서 `CoroutineScope`이 종료된다면, 해당 스코프 내에서 생성된 모든 코루틴들은 완료 여부에 관계 없이 모두 `취소`된다.
-
+`
 코루틴 생성 시, 반드시 `CoroutineScope` 내부에서 생성해야 컴파일이 이뤄진다.
 
 `runBlocking`을 제외한 코루틴 빌더 함수들은 `CoroutineScope`의 확장함수라는 것이 그 증거이다.
